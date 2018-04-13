@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+          <meta charset="utf-8">
+          <title>Homepage</title>
+          <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+          <link rel="stylesheet" href="/static/style.css">
+          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+          <script src="//apis.google.com/js/platform.js?onload=start"> </script>
+    </head>
+<body>
+    <div class="wrapper">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for m in messages %}
+                    <div class="flashmessage">
+                        <p><strong>{{ m }}</strong></p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <header>
+            <nav>
+                <div class="navitem">
+                        <a class="navlink" href="/">Home</a>
+                </div>
+                <div class="navitem">
+                        <a class="navlink" href="/create">Create Entry</a>
+                </div>
+                <div class="navitem">
+                        {% if user %}
+                        <a class="navlink" href="">{{ user }}</a>
+                        {% else %}
+                        <a class="navlink" href="#">Guest Account</a>
+                        {% endif %}
+                </div>
+                <div class="navitem">
+                    {% if user %}
+                    <a class="navlink" href="/gdisconnect">Sign Out</a>
+                    {% else %}
+                    <a class="navlink" href="/login">Sign In</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
+                <!-- GOOGLE PLUS SIGN IN BUTTON, THIS SENDS INFO TO GOOGLE-->
+                <div class="signincontainer">
+                          <div id="signinButton">
+                              <span class="g-signin"
+                                    data-scope="openid email"
+                                    data-clientid="1042477957154-m19nsa3matbjbe61are8vta5e278onpp.apps.googleusercontent.com"
+                                    data-redirecturi="postmessage"
+                                    data-accesstype="offline"
+                                    data-cookiepolicy="single_host_origin"
+                                    data-callback="signInCallback"
+                                    data-approvalprompt="force">
+                              </span>
+                        </div>
+                    </div>
+                    <div id="result"></div>
+                <!--END GOOGLE PLUS SIGN IN BUTTON -->
+                    <script type="text/javascript">
+                        function signInCallback(authResult) {
+                            if (authResult['code']) {
+                                $('#signinButton').attr('style', 'display: none');
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/gconnect?state={{ STATE }}',
+                                    processData: false,
+                                    contentType: 'application/octet-stream; charset=utf-8',
+                                    data: authResult['code'],
+                                    success: function(result) {
+                                        if (result) {
+                                            $('#result').html('LOGIN SUCCESSFUL!</br>' + result + '</br>REDIRECTING...')
+                                            setTimeout(function() {
+                                                window.location.href = '/home';
+                                            }, 4000);
+                                        } else if (authResult['error']) {
+                                            console.log('THERE WAS AN ERROR' + authResult['error']);
+                                        } else {
+                                                $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+                                            }
+                                    }
+                                });
+                            }
+                        }
+                    </script>
+        </div>
+</body>
+
+ </html>

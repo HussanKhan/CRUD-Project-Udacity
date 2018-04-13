@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Trailer</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <div class="wrapper">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for m in messages %}
+                            <div class="flashmessage">
+                                <p><strong>{{ m }}</strong></p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <header>
+                    <nav>
+                        <div class="navitem">
+                                <a class="navlink" href="/">Home</a>
+                        </div>
+                        <div class="navitem">
+                                <a class="navlink" href="/create">Create Entry</a>
+                        </div>
+                        <div class="navitem">
+                                {% if user %}
+                                <a class="navlink" href="">{{ user }}</a>
+                                {% else %}
+                                <a class="navlink" href="#">Guest Account</a>
+                                {% endif %}
+                        </div>
+                        <div class="navitem">
+                            {% if user %}
+                            <a class="navlink" href="/gdisconnect">Sign Out</a>
+                            {% else %}
+                            <a class="navlink" href="/login">Sign In</a>
+                            {% endif %}
+                        </div>
+                    </nav>
+                </header>
+            <div class="videomod">
+                <div class="thetrailer">
+                    <!-- For Youtube Video -->
+                    <iframe width="560" height="315" src="{{ thelink }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <div class="thesummary">
+                    {{ summary|safe }}
+                </div>
+            </div>
+            <div class="gamelinks">
+                <div class="editlinks">
+                    <a class="changelog" href="{{ more_info }}">More Info</a>
+                </div>
+                <div class="editlinks">
+                    <a class="changelog" href="/{{g.genre}}/{{g.id}}/{{g.title}}/edit">Edit</a>
+                </div>
+                <div class="editlinks">
+                    <a class="changelog" href="/{{g.genre}}/{{g.id}}/{{g.title}}/delete">Delete</a>
+                </div>
+            </div>
+            <hr>
+            <h4>Similar Games</h4>
+            <div class="genres">
+                {% for i in similar_games %}
+                    <div class="genreitem">
+                        <a class="gamecat" href="/{{ i.genre }}/{{ i.id }}/{{ i.title }}">{{ i.title }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>

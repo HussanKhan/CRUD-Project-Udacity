@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Create Game Entry</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <div class="wrapper">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for m in messages %}
+                        <div class="flashmessage">
+                            <p><strong>{{ m }}</strong></p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <header>
+                <nav>
+                    <div class="navitem">
+                            <a class="navlink" href="/">Home</a>
+                    </div>
+                    <div class="navitem">
+                            <a class="navlink" href="/create">Create Entry</a>
+                    </div>
+                    <div class="navitem">
+                            {% if user %}
+                            <a class="navlink" href="">{{ user }}</a>
+                            {% else %}
+                            <a class="navlink" href="#">Guest Account</a>
+                            {% endif %}
+                    </div>
+                    <div class="navitem">
+                        {% if user %}
+                        <a class="navlink" href="/gdisconnect">Sign Out</a>
+                        {% else %}
+                        <a class="navlink" href="/login">Sign In</a>
+                        {% endif %}
+                    </div>
+                </nav>
+            </header>
+                <form class="formhold" method="POST" id=create_game>
+                    <div class="inputitem">
+                        <h2 class="formtitle">Edit Game Entry</h2>
+                    </div>
+                    <div class="inputitem">
+                        <input type="text" name="Title" value="{{ title }}"><br>
+                    </div>
+                    <div class="inputitem">
+                        <input type="text" name="Trailer" value="{{ game.trailers }}" required><br>
+                    </div>
+                    <div class="inputitem">
+                        <input type="text" name="wikilink" value="{{ game.more_info }}" required><br>
+                    </div>
+                    <div class="inputitem">
+                        <textarea id="summary" form="create_game" name="summary" rows="4" cols="40" required>{{ game.summary }}</textarea><br>
+                    </div>
+                    <div class="inputitem">
+                        Genre: <br>
+                        <select class="create_game" name="genre">
+                            <option selected="selected">{{ game.genre }}</option>
+                            {% for i in genre_list %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select><br>
+                    </div>
+                    <div class="inputitem">
+                        <input class="submitbutton" type="submit" name="submit" value="Edit"><br>
+                    </div>
+                </form>
+            </div>
+    </body>
+</html>

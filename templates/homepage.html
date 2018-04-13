@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Homepage</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+        <body>
+            <div class="wrapper">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for m in messages %}
+                            <div class="flashmessage">
+                                <p><strong>{{ m }}</strong></p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <header>
+                    <nav>
+                        <div class="navitem">
+                                <a class="navlink" href="/">Home</a>
+                        </div>
+                        <div class="navitem">
+                                <a class="navlink" href="/create">Create Entry</a>
+                        </div>
+                        <div class="navitem">
+                                {% if user %}
+                                <a class="navlink" href="">{{ user }}</a>
+                                {% else %}
+                                <a class="navlink" href="#">Guest Account</a>
+                                {% endif %}
+                        </div>
+                        <div class="navitem">
+                            {% if user %}
+                            <a class="navlink" href="/gdisconnect">Sign Out</a>
+                            {% else %}
+                            <a class="navlink" href="/login">Sign In</a>
+                            {% endif %}
+                        </div>
+                    </nav>
+                </header>
+            <div class="genres">
+                {% for i in genre_list %}
+                <div class="genreitem">
+                        <h3><a class="gamecat" href="/{{ i }}">{{ i }}</a></h3>
+                </div>
+                {% endfor %}
+            </div>
+            <h3>This is a list of video games that have consistently been ranked
+                among the best of all time by video game journalists and critics.
+                The games listed here are included on at least four separate
+                "best/greatest of all time" lists from different reliable
+                publications.</h3>
+            </div>
+        </body>
+</html>
