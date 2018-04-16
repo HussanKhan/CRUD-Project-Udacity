@@ -35,7 +35,7 @@ def retrieve_table_filter(tablename, attr, name):
 @app.route('/login')
 def user_login():
     content = string.ascii_uppercase + string.digits
-    state_token = ''.join(random.choice(content) for x in xrange(32))
+    state_token = ''.join(random.choice(content) for x in range(0, 33))
     current_session['state'] = state_token
     return render_template('login.html', STATE=state_token)
 
@@ -69,7 +69,7 @@ def gconnect():
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' %
            access_token)
     h = httplib2.Http()
-    result = json.loads(h.request(url, 'GET')[1])
+    result = json.loads(h.request(url, 'GET')[1].decode('utf-8'))
 
     if result.get('error') is not None:
         response = make_response(json.dump(result.get('error')), 500)
@@ -144,8 +144,8 @@ def gdisconnect():
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
-    print 'result is '
-    print result
+    print ('result is ')
+    print (result)
 
     # If good response recieved delete variables stored for user
     if result['status'] == '200':
